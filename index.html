@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Automated Crate publishing</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="public/custom.css" type="text/css" rel="stylesheet">
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Automatic Crate publishing
+
+## 🚀 semantic-rs 🚀
+
+---
+class: center, middle
+
+# Who am I?
+
+## Student, Open Source Enthusiast, OTS Coach & Conf Organizer
+
+---
+class: center, middle
+
+# Automatic Crate publishing
+
+---
+class: center, middle
+
+# 3861 Crates
+
+
+---
+class: middle
+
+# 0.0.1, 0.1.0, 0.1.10+20150618, 0.20130412.3, 0.2.3-alpha0, 1.0.0, 2.7.4
+
+---
+class: center, middle, huge
+
+# ?.?.?
+
+---
+class: center, middle, huge
+
+# X.Y.Z
+
+---
+class: center, middle
+
+# MAJOR.MINOR.PATCH
+
+---
+class: center, middle
+
+# MAJOR
+
+## An incompatible API change
+
+---
+class: center, middle
+
+# MINOR
+
+## Added functionality in a backwards-compatible way
+
+---
+class: center, middle
+
+# PATCH
+
+## Bug fixes
+
+---
+class: middle, huge-code
+
+```toml
+[dependencies]
+libc = "*"
+```
+
+---
+class: middle, huge-code
+
+```toml
+[dependencies]
+libc = "0.1.0"
+```
+---
+class: middle, huge-code
+
+```toml
+[dependencies]
+libc = "^0.1.0"
+```
+---
+class: middle, huge-code
+
+```toml
+[dependencies]
+libc = "&lt;1.0.0"
+```
+
+---
+class: middle, center
+
+# Release Day
+
+---
+class: middle, bullets
+
+1. Commit all code
+2. Test it!
+3. Document everything properly
+4. Write a changelog
+5. Bump the version
+6. Tag & Publish
+
+---
+class: center, middle
+
+# Tests are automated*
+# Why not the rest?
+
+.citation[They are, right?]
+
+---
+class: center, middle
+
+# `semantic-rs`
+
+---
+class: middle, command
+
+```bash
+$ semantic-rs -p ~/code/my-project
+semantic.rs 🚀
+Analyzing your repository
+Current version: 0.1.0
+Analyzing commits
+Commits analyzed. Bump would be Minor
+New version would be: 0.2.0
+Would write the following Changelog:
+====================================
+## v0.2.0 (2016-01-27)
+
+
+#### Features
+
+- A feature
+
+====================================
+Would create annotated git tag
+```
+
+---
+class: middle, center
+
+# Convention over configuration
+
+---
+class: bigger-code
+
+# Commit message format*
+
+```notrust
+scope(path): Commit message
+
+Detailed info
+```
+.citation[Angular.js commit message format]
+
+---
+class: bigger-code, middle
+
+```notrust
+fix: Don't divide by 0
+```
+---
+class: bigger-code, middle
+
+```notrust
+feat: Calculate square-root
+```
+
+---
+class: bigger-code, middle
+
+```notrust
+feat: Handle floating-point 
+
+BREAKING CHANGE: 
+    This removes the handling 
+    of 64-bit integers.
+    This old code:
+
+      mylib::sqrt(4);
+
+    must be replaced with:
+
+      mylib::sqrt(4.0);
+```
+
+---
+class: center, middle
+
+# `semantic-rs`
+
+---
+class: bullets, middle
+
+# `v0.1.0`
+
+* Version bump
+* Changelog
+* Commit & Tag
+
+---
+class: bullets
+
+# Upcoming
+
+* CI Integration
+* Automatic publish
+
+---
+class: bullets
+
+# In the future
+
+* Breaking Change Detection
+* API diff
+
+---
+class: center, middle
+
+# [git.io/semantic](https://git.io/semantic)
+
+  </textarea>
+    <script src="public/remark.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
