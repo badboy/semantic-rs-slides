@@ -14,6 +14,8 @@ class: center, middle
 
 ## 🚀 semantic-rs 🚀
 
+### Rust Cologne/Bonn — 2016-02-03 — [@badboy_](https://twitter.com/badboy_)
+
 ---
 class: center, middle
 
@@ -29,7 +31,7 @@ class: center, middle
 ---
 class: center, middle
 
-# 3861 Crates
+# 3965 CCrates
 
 
 ---
@@ -43,31 +45,36 @@ class: center, middle, huge
 # ?.?.?
 
 ---
+class: center, middle, bigger
+
+# [semver.org](http://semver.org/)
+
+---
 class: center, middle, huge
 
 # X.Y.Z
 
 ---
-class: center, middle
+class: center, middle, bigger
 
 # MAJOR.MINOR.PATCH
 
 ---
-class: center, middle
+class: center, middle, bigger
 
 # MAJOR
 
 ## An incompatible API change
 
 ---
-class: center, middle
+class: center, middle, bigger
 
 # MINOR
 
 ## Added functionality in a backwards-compatible way
 
 ---
-class: center, middle
+class: center, middle, bigger
 
 # PATCH
 
@@ -104,7 +111,7 @@ libc = "&lt;1.0.0"
 ```
 
 ---
-class: middle, center
+class: middle, center, bigger
 
 # Release Day
 
@@ -124,12 +131,26 @@ class: center, middle
 # Tests are automated*
 # Why not the rest?
 
-.citation[They are, right?]
+.footnote[They are, right?]
 
 ---
 class: center, middle
 
 # `semantic-rs`
+
+### by [@neinasaservice][] and me
+
+[@neinasaservice]: https://twitter.com/neinasaservice
+
+---
+
+class: middle, center
+
+# `semantic-release`
+
+## fully automated package publishing
+
+.footnote[The original idea for npm packages by [@boennemann](https://twitter.com/boennemann)]
 
 ---
 class: middle, command
@@ -166,11 +187,11 @@ class: bigger-code
 # Commit message format*
 
 ```notrust
-scope(path): Commit message
+<type>(<scope>): <subject>
 
-Detailed info
+<body>
 ```
-.citation[Angular.js commit message format]
+.footnote[[Angular.js commit message format](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit-message-format)]
 
 ---
 class: bigger-code, middle
@@ -208,25 +229,35 @@ class: center, middle
 
 # `semantic-rs`
 
----
-class: bullets, middle
+### by [@neinasaservice][] and me
 
-# `v0.1.0`
+[@neinasaservice]: https://twitter.com/neinasaservice
+
+---
+class: bullets, middle, center
+
+# `semantic-rs v0.1.0`
 
 * Version bump
 * Changelog
 * Commit & Tag
 
 ---
-class: bullets
+class: center, middle, bigger
 
-# Upcoming
-
-* CI Integration
-* Automatic publish
+# `cargo release`
 
 ---
-class: bullets
+class: middle, bigger-code
+
+### `.travis.yml`
+```notrust
+after_success:
+  - cargo release
+```
+
+---
+class: bullets, bigger
 
 # In the future
 
@@ -234,7 +265,7 @@ class: bullets
 * API diff
 
 ---
-class: center, middle
+class: center, middle, bigger
 
 # [git.io/semantic](https://git.io/semantic)
 
