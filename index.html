@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html
 <html>
   <head>
     <title>Automated Crate publishing</title>
@@ -32,7 +32,7 @@ Seit August 2014 spiele ich mit Rust rum und habe inzwischen 10 Libraries veröf
 Und heute bin ich hier und spreche über mein 11. Projekt
 
 ---
-class: center, middle
+class: center, middle, bigger
 
 # Automatic Crate publishing
 
@@ -41,9 +41,20 @@ class: center, middle
 Es geht um voll-automatische Releases von Software
 
 ---
-class: center, middle
+class: center, middle, nearly-huge
 
-# 3965 Crates
+# 3977 Crates
+
+.footnote[last checked: 15:45]
+
+???
+
+Das Ökosystem von Rust wächst rasant. 
+Inzwischen über 3900 Crates auf crates.io.
+Viele davon mit zig Versionen.
+Einiges natürlich auch nur Spielerein, veraltet oder nur als Namensreservierung
+
+Aber alle eben mit sowas wie einer Versionsnummer.
 
 
 ---
@@ -51,39 +62,73 @@ class: middle
 
 # 0.0.1, 0.1.0, 0.1.10+20150618, 0.20130412.3, 0.2.3-alpha0, 1.0.0, 2.7.4
 
+???
+
+Und davon gibt es nun wirklich hunderte verschiedene.
+
+Das dort sind einige wirklich existierende Versionsnummern.
+
+Nur was bedeuten die?
+
 ---
 class: center, middle, huge
 
 # ?.?.?
+
+???
+
+Die meisten Versionsnummern bestehen aus drei Parts.
+
+Und das aus gutem Grund
 
 ---
 class: center, middle, nearly-huge
 
 # [semver.org](http://semver.org/)
 
+???
+
+Rust und Cargo bzw. Crates haben die kluge Entscheidung getroffen semver zu folgen.
+
+Semantic Versioning.
+
+Semantic Versioning ist eine Spezifikation, die jedem der 3 Teile der Versionsnummer 
+eine exakte Bedeutung zuweist.
+
+Damit werden Versionsnummern nicht mehr willkürlich zu Marketingzwecken benutzt, 
+sondern haben eine technische Bedeutung.
+Und das macht Sinn.
+
+Releasenamen sind für's Marketing sowieso besser.
+
 ---
 class: center, middle, huge
 
 # X.Y.Z
+
+???
+
+Also. 3 Teile.  
+X  
+Y  
+Z  
 
 ---
 class: center, middle, bigger
 
 # MAJOR.MINOR.PATCH
 
----
-class: center, middle, bigger
+???
 
-# MAJOR
+Oder auch:  
+MAJOR  
+MINOR  
+PATCH  
 
-## An incompatible API change
+semver definiert nun wann genau man welchen Teil erhöhen soll
 
----
-class: center, middle, bigger
+Versionsnummern definieren die Kompatibilität der _dokumentierten API_
 
-# MINOR
-
-## Added functionality in a backwards-compatible way
 
 ---
 class: center, middle, bigger
@@ -92,40 +137,150 @@ class: center, middle, bigger
 
 ## Bug fixes
 
+???
+
+Den letzte Teil der Versiosnummer erhöht man immer dann,
+wenn man einen rückwärts-kompatiblen Bug fix  veröffentlicht.
+
+---
+class: center, middle, bigger
+
+# MINOR
+
+## Added functionality in a backwards-compatible way
+
+???
+
+Der mittlere Part wird erhöht wenn man ein neues Feature hinzufügt ohne alten Code kaputt zu machen.
+Die Patch Version setzt man dann selbstverständlich auf 0.
+
+---
+class: center, middle, bigger
+
+# MAJOR
+
+## An incompatible API change
+
+???
+
+Zu guter letzt die Major-Version
+
+Immer wenn man einen Breaking Change einbaut muss man die Major Version erhöhen.
+Minor und Patch setzt man zurück.
+
+Wichtig hier: Bei Major Version 0 gilt die gesamte API als unstable. 
+Alles unter Version 1.0.0 kann also jederzeit kaputt gehen.
+
+---
+class: center, middle, bigger
+
+# [RFC 1105](https://github.com/rust-lang/rfcs/blob/master/text/1105-api-evolution.md)
+
+## API Evolution
+
+???
+
+Die semver-Regeln sind ziemlich streng.
+Wenn man nicht aufpasst rennt man ziemlich schnell für die kleinsten Änderungen in Major-Releases.
+Das ist vielleicht nicht jedem recht.
+
+Das haben auch die Rust-Leute erkannt und daher gibt es RFC 1105, "API Evolution"
+
+Das sind Guidelines die dokumentieren welche API Changes aus semver-Perspektive als Breaking Change
+angesehen werden sollen.
+
+Auch wenn ich nicht 100%ig damit übereinstimme, 
+finde ich es gut das es diese Guidelines so gibt.
+Damit hat man schon mal niedergeschrieben Regeln denen man folgen kann.
+
 ---
 class: middle, huge-code
 
 ```toml
 [dependencies]
-libc = "*"
+mylib = "*"
 ```
+
+???
+
+Nun will man natürlich das die eigene Library benutzt wird.
+Sie wird also zur dependency für eine Applikation.
+
+Cargo macht es recht einfach externe Libraries einzubinden.
+
+aber bitte bitte nie mit einer star-version.
+
+Jede Version erfüllt diese Anforderung,
+aber ich wette eure Applikation kommt nicht mit jeder in Zukunft veröffentlichten Version von mylib klar.
+
+Es ist nicht mehr möglich crates auf crates.io hochzuladen die star dependencies haben.
 
 ---
 class: middle, huge-code
 
 ```toml
 [dependencies]
-libc = "0.1.0"
+mylib = "1.1.0"
 ```
+
+.footnote[<https://docs.npmjs.com/misc/semver>]
+
+???
+
+Wenn ihr einfach nur eine Versionsnummer reinschreibt ist das in den meisten Fällen genau das 
+was ihr wollt.
+
 ---
 class: middle, huge-code
 
 ```toml
 [dependencies]
-libc = "^0.1.0"
+mylib = "^1.1.0"
 ```
+
+.footnote[<https://docs.npmjs.com/misc/semver>]
+
+???
+
+Es ist nämlich das gleich wie das ganze mit Caret vorne dran
+
+Caret bedeutet: alles im gleichen Major-Versions-Bereich.
+Also alles was größer oder gleich Version 1.1.0 und kleiner als 2.0.0 ist
+
+Man bekommt somit alle Bugfixes und neuen Features, 
+aber es sollte (fast) nichts kaputt gehen.
+
 ---
 class: middle, huge-code
 
 ```toml
 [dependencies]
-libc = "&lt;1.0.0"
+mylib = "~1.1.0"
 ```
+.footnote[<https://docs.npmjs.com/misc/semver>]
+
+???
+
+Man kann es auch noch weiter einschränken 
+und beispielsweise nur alle Bufixes aka Patches zulassen.
+
+Oder feste Versionen angeben oder irgendwelche Version Ranges.
+
+Wenn alle semver strikt durchziehen würden wäre die erste Variante aber am einfachsten 
+und mit den geringsten Problemen bei größter Flexibilität
 
 ---
 class: middle, center, nearly-huge
 
 # Release Day
+
+???
+
+So viel zur Theorie. 
+
+Kommen wir zu den eigentlichen Releases, um die sollte es ja gehen.
+
+Wenn man seine Software, library, whatever dann endlich releasen will steht einiges an.
 
 ---
 class: middle, bullets
@@ -137,6 +292,21 @@ class: middle, bullets
 5. Bump the version
 6. Tag & Publish
 
+???
+
+Viele haben dafür eine fertige Liste, die sie abarbeiten.
+
+Zuerst ein mal muss man den neuen Code committen.
+Dann wird hoffentlich getestet und alles sauber dokumentiert.
+
+Anschließend dokumentiert man noch die Änderungen.
+Vielleicht sind Breaking Changes drin, also muss man diese auch erklären und zeigen wie es geändert werden muss.
+
+Dann überlegt man sich eine neue Versionsnummer 
+und zu guter letzt wird das ganze getaggt und hochgeladen.
+
+Dieser oft manuelle Prozess ist irgendwie nervig und viel zu fehlerbehaftet
+
 ---
 class: center, middle, bigger
 
@@ -144,6 +314,15 @@ class: center, middle, bigger
 # Why not the rest?
 
 .footnote[They are, right?]
+
+???
+
+Meistens sind Tests komplett durchautomatisiert und laufen sowieso bei jedem Push.
+
+Wieso das nicht auch für Releases?
+
+Jeder der zuvorgenannten Schritte lässt sich relativ einfach automatisieren.
+Bis auf das Code schreiben.
 
 ---
 class: center, middle, bigger
@@ -154,6 +333,11 @@ class: center, middle, bigger
 
 [@neinasaservice]: https://twitter.com/neinasaservice
 
+???
+
+Und daher haben Jan und ich uns zusammengetan und bauen semantic-rs
+Ein Tool um den Releaseprozess vollautomatisiert ablaufen zu laufen.
+
 ---
 
 class: middle, center
@@ -163,6 +347,11 @@ class: middle, center
 ## fully automated package publishing
 
 .footnote[The original idea for npm packages by [@boennemann](https://twitter.com/boennemann)]
+
+???
+
+Das war aber nicht unsere eigene Idee.
+Dieses Tool kommt ursprünglich aus der node.js Ecke und wurde von Stephan Bönnemann gebaut.
 
 ---
 class: middle, command
@@ -188,10 +377,25 @@ Would write the following Changelog:
 Would create annotated git tag
 ```
 
+???
+
+Ziel des Tools ist es das manuelle Abarbeiten der Punkte von vorher zu automatisieren.
+
+Wenn ihr das auf einem Rust Projekt laufen lasst, fängt es an die Version auszulesen,
+Guckt dann in eure Commits seit dem letzten Release, entscheidet sich für eine neue Version,
+schreibt die in die Cargo.toml, 
+schreibt noch einen Changelog und committet alles wieder.
+
 ---
 class: middle, center, bigger
 
 # Convention over configuration
+
+???
+
+Das ganze funktioniert bislang komplett ohne Konfiguration.
+
+Alles was benötigt wird ist ein wenig Disziplin und Konvention.
 
 ---
 class: bigger-code
@@ -205,18 +409,41 @@ class: bigger-code
 ```
 .footnote[[Angular.js commit message format](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit-message-format)]
 
+???
+
+Die Entscheidung für die neue Versionsnummer trifft semantic-rs auf Basis der Commits 
+zwischen jetzt und dem letzten Release 
+oder Beginn des Projektes, wenn es kein Release gibt.
+
+Dafür müssen die Commits nach einem bestimmten Muster formatiert sein.
+Das Angular.js commit message format ist dabei recht simpel und wie ich finde nicht zu nervig.
+
+Es besteht aus dem Typ des Commits, einem Scope und der eigentlichen Commit Message.
+Optional noch einer detailierteren Beschreibung
+
 ---
 class: bigger-code, middle
 
 ```notrust
 fix: Don't divide by 0
 ```
+
+???
+
+Der simpelste Typ ist `fix`: Ein Commit der einen einzigen Bugfix enthält und nichts kaputt macht.
+So ein Commit bedeutet ein Patch-Release
+
 ---
 class: bigger-code, middle
 
 ```notrust
 feat: Calculate square-root
 ```
+
+???
+
+Der nächste Typ ist dann `feat`. Ein Feature, was ebenso rückwärts-kompatibel ist.
+Ein Feature bedeutet einen Bump der Minor Version
 
 ---
 class: bigger-code, middle
@@ -236,6 +463,15 @@ BREAKING CHANGE:
       mylib::sqrt(4.0);
 ```
 
+???
+
+Und dann gibt's noch die Features die bestehenden User Code kaputt machen.
+Ein Breaking Change also.
+Wichtig ist es das man diesen ausführlich dokumentiert und am besten direkt angibt 
+wie man bestehenden Code fixen kann.
+
+Solch ein Commit bedeutet immer einen Bump der Major Version
+
 ---
 class: center, middle, bigger
 
@@ -245,19 +481,46 @@ class: center, middle, bigger
 
 [@neinasaservice]: https://twitter.com/neinasaservice
 
+???
+
+semantic-rs geht nun alle Commits durch und findet den höchsten notwendigen Versions Bump
+und generiert dementsprechend die Versionsnummer und den Changelog.
+
+Im Changelog stehen dann die Commit messages. 
+Und dann eben auch die Beschreibung für Breaking Changes.
+Daher sollte man sowas direkt in der Commit Message dokumentieren und spart sich so spätere Arbeit
+
 ---
 class: bullets, middle, center
 
-# `semantic-rs v0.1.0`
+# `semantic-rs v0.1.0*`
 
 * Version bump
 * Changelog
 * Commit & Tag
 
+.footnote[\* will be released tomorrow]
+
+???
+
+Wir sind auch schon fast fertig mit einer ersten nutzbaren Version von semantic-rs
+
+Diese beinhaltet bislang das beschriebene, muss aber noch manuell und lokal ausgeführt werden.
+
+Ab morgen könnt ihr das dann hoffentlich auch vernünftig benutzen.
+
 ---
 class: center, middle, bigger
 
 # `cargo release`
+
+???
+
+Wir haben aber noch ein bisschen mehr vor.
+
+Bislang muss man das git repo mit dem neuen Tag noch normal pushen, 
+auf GitHub einen Release erstellen
+und das crate publishen.
 
 ---
 class: middle, bigger-code
@@ -268,6 +531,12 @@ after_success:
   - cargo release
 ```
 
+???
+
+In naher Zukunft wird aber auch das komplett automatisch laufen.
+Dann kann man es auch einfach auf Travis laufen lassen 
+und braucht nicht mal mehr über ein Release nachdenken.
+
 ---
 class: bullets, bigger
 
@@ -276,10 +545,36 @@ class: bullets, bigger
 * Breaking Change Detection
 * API diff
 
+???
+
+Außerdem wollen wir noch Features nachbauen die es im Originalprojekt auch schon gibt
+oder wir von woanders kennen.
+
+Zum Beispiel wollen wir Breakin Changes automatisch erkennen.
+Denn bei aller Disziplin: Devs sind nicht immer so ganz gut darin ihren Code sauber zu dokumentieren
+und Breaking Changes zu erkennen.
+
+Eine Möglichkeit ist es die Tests aus der vorherigen Version gegen den neuen Code laufen zu lassen.
+Ohne Breaking Changes sollten diese durchlaufen.
+
+Von der Sprache elm und ihrem Package Manager hab ich dazu noch die Idee einfach die API zu vergleichen.
+
+Alten und neuen Code zu diffen und zu gucken was verändert wurde.
+RFC 1105 gibt dazu ja schon genaue Beschreibungen welche Veränderungen wie zu Problemen führen können, die man dann erkennen könnte.
+
 ---
 class: center, middle, bigger
 
 # [git.io/semantic](https://git.io/semantic)
+
+???
+
+semantic-rs ist online auf GitHub zu finden oder ihr folgt einfach diesem Short Link.
+
+Und jetzt die Frage an euch:
+Würdet ihr es nutzen? Was haltet ihr von der Idee?
+Was haltet ihr von semver?
+Was haltet ihr von der Idee von Continuous Releases?
 
   </textarea>
     <script src="public/remark.js" type="text/javascript">
