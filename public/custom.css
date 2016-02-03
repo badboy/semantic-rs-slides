@@ -39,6 +39,14 @@ a:visited, a:active, a {
   left: 20px;
   background-color: black; /*rgba(203, 56, 55, 1);*/
 }
+.footnote2 {
+  font-size: 1.0em;
+  padding: 5px;
+  position: absolute;
+  bottom: 60px;
+  left: 20px;
+  background-color: black; /*rgba(203, 56, 55, 1);*/
+}
 
 .real-big {
   font-size: 2em;
